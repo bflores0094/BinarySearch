@@ -1,0 +1,35 @@
+#!/bin/bash
+sort gradeList > sorted.dat
+
+read -p "Enter the name of a student: " v_name
+
+((count = 0 ))
+while read students[$count] ; do
+  ((count++))
+done < sorted.dat
+
+
+((first=0))
+((last=${#students[@]} -1))
+while [[ $first -le $last ]] ; do
+  
+  ((middle=($first+$last)/2))
+
+  name=$(echo ${students[$middle]} | cut -d: -f1)
+  grade=$(echo ${students[$middle]} | cut -d: -f2)
+  
+
+  if [[ $name = $v_name ]]
+    then
+      echo "$name's grade is $grade"
+      exit
+    elif [[ $name < $v_name ]]
+      then
+        ((first = $middle + 1))
+    
+   else
+       ((last = $middle - 1 ))
+  fi
+done
+
+      echo "That student is not found."
